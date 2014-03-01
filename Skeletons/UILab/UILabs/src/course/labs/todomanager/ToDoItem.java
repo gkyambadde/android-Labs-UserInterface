@@ -43,7 +43,6 @@ public class ToDoItem {
 	}
 
 	// Create a new ToDoItem from data packaged in an Intent
-
 	ToDoItem(Intent intent) {
 
 		mTitle = intent.getStringExtra(ToDoItem.TITLE);
@@ -91,7 +90,6 @@ public class ToDoItem {
 
 	// Take a set of String data values and 
 	// package them for transport in an Intent
-
 	public static void packageIntent(Intent intent, String title,
 			Priority priority, Status status, String date) {
 

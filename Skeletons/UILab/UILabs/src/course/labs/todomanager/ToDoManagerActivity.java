@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.util.Date;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 import course.labs.todomanager.ToDoItem.Priority;
 import course.labs.todomanager.ToDoItem.Status;
@@ -36,12 +38,15 @@ public class ToDoManagerActivity extends ListActivity {
 	// IDs for menu items
 	private static final int MENU_DELETE = Menu.FIRST;
 	private static final int MENU_DUMP = Menu.FIRST + 1;
+    private Context context = null;
 
-	ToDoListAdapter mAdapter;
+
+    ToDoListAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        context = this;
 
 		// Create a new TodoListAdapter for this ListActivity's ListView
 		mAdapter = new ToDoListAdapter(getApplicationContext());
@@ -50,24 +55,30 @@ public class ToDoManagerActivity extends ListActivity {
 		getListView().setFooterDividersEnabled(true);
 
 		//TODO - Inflate footerView for footer_view.xml file
+        TextView footerView =  ((TextView)getLayoutInflater().inflate(R.layout.footer_view, null,false));
 
-		TextView footerView = null;
 
 		//TODO - Add footerView to ListView
+        ListView list = (ListView)findViewById(android.R.id.list);
+        list.addFooterView(footerView);
 
-		footerView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
 
-				log("Entered footerView.OnClickListener.onClick()");
+        if (footerView != null) {
+            footerView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-				//TODO - Attach Listener to FooterView. Implement onClick().
+                    log("Entered footerView.OnClickListener.onClick()");
+                    //TODO - Attach Listener to FooterView. Implement onClick().
+                    footerClick();
 
-			}
-		});
+                }
+            });
+        }
 
-		//TODO - Attach the adapter to this ListActivity's ListView
-
+        //TODO - Attach the adapter to this ListActivity's ListView
+        ToDoListAdapter mAdapter = new ToDoListAdapter(context);
+        list.setAdapter(mAdapter);
 	}
 
 	@Override
@@ -203,5 +214,11 @@ public class ToDoManagerActivity extends ListActivity {
 		}
 		Log.i(TAG, msg);
 	}
+
+    private void footerClick() {
+        Intent addToDo = new Intent(context, AddToDoActivity.class);
+        startActivityForResult(addToDo,ADD_TODO_ITEM_REQUEST);
+
+    }
 
 }

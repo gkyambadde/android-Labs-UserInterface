@@ -3,6 +3,7 @@ package course.labs.todomanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class ToDoListAdapter extends BaseAdapter {
 	private final List<ToDoItem> mItems = new ArrayList<ToDoItem>();
 	
 	private final Context mContext;
+    private int mResource;
 
 	private static final String TAG = "Lab-UserInterface";
 
@@ -31,9 +33,16 @@ public class ToDoListAdapter extends BaseAdapter {
 
 	}
 
+    // Class to hold ArrayList Items that are in view
+    private static class ToDoHolder {
+        TextView title;
+        CheckBox status;
+        TextView priority;
+        TextView date;
+    }
+
 	// Add a ToDoItem to the adapter
 	// Notify observers that the data set has changed
-
 	public void add(ToDoItem item) {
 
 		mItems.add(item);
@@ -42,7 +51,6 @@ public class ToDoListAdapter extends BaseAdapter {
 	}
 	
 	// Clears the list adapter of all items.
-	
 	public void clear(){
 
 		mItems.clear();
@@ -51,7 +59,6 @@ public class ToDoListAdapter extends BaseAdapter {
 	}
 
 	// Returns the number of ToDoItems
-
 	@Override
 	public int getCount() {
 
@@ -85,6 +92,20 @@ public class ToDoListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 
+        View v = convertView;
+
+        if (v == null) {
+            LayoutInflater inflater = ((Activity)mContext).getLayoutInflater();
+            v = inflater.inflate(mResource, null);
+            ToDoHolder toDoHolder = new ToDoHolder();
+            toDoHolder.title =  ((TextView)v.findViewById(R.id.titleView));
+            toDoHolder.priority = ((TextView)v.findViewById(R.id.priority));
+            toDoHolder.date = ((TextView)v.findViewById(R.id.date));
+            toDoHolder.status = ((CheckBox)v.findViewById(R.id.statusCheckBox));
+        }
+
+        ToDoHolder holder = (ToDoHolder)v.getTag();
+
 		//TODO - Get the current ToDoItem
 		final ToDoItem toDoItem = null;
 
@@ -104,23 +125,24 @@ public class ToDoListAdapter extends BaseAdapter {
 		// TODO - Set up Status CheckBox
 	
 		final CheckBox statusView = null;
-		
-		
-		statusView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
-				log("Entered onCheckedChanged()");
-				
-				// TODO - Set up and implement an OnCheckedChangeListener, which 
-				// is called when the user toggles the status checkbox
 
 
-			
-			}
-		});
+        if (statusView != null) {
+            statusView.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                        boolean isChecked) {
+                    log("Entered onCheckedChanged()");
 
-		//TODO - Display Priority in a TextView
+                    // TODO - Set up and implement an OnCheckedChangeListener, which
+                    // is called when the user toggles the status checkbox
+
+
+                }
+            });
+        }
+
+        //TODO - Display Priority in a TextView
 
 		final TextView priorityView = null;
 
